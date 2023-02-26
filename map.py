@@ -1,6 +1,7 @@
 import pygame as p
 import csv
 import sprait
+from satinbs import*
 
 class  Map:
     def __init__(self):
@@ -40,9 +41,9 @@ class  Map:
                 ff = self.map_png1[int(ggf)]
                 ffg = sprait.Tile((x,y), ggf, ff)
                 self.tail.append(ffg)
-                x = x + 16
+                x = x + TAIL_SIZE
             x = 0
-            y = y + 16
+            y = y + TAIL_SIZE
     def dref(self, display):
         for f in self.tail:
             f.dref(display)

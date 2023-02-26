@@ -1,4 +1,5 @@
 import pygame as p
+from satinbs import*
 
 class Sanek:
 
@@ -85,9 +86,10 @@ class Sanek:
 class Tile:
     def __init__(self, spavn, nymer, paint):
         self.paint = paint
+        self.p = p.transform.scale(self.paint, (TAIL_SIZE, TAIL_SIZE))
         self.nymer = nymer
         self.spavn = spavn
-        self.rect = p.Rect(spavn, (16,16))
+        self.rect = p.Rect(spavn, (TAIL_SIZE,TAIL_SIZE))
 
     def dref(self, display):
-        display.blit(self.paint, self.rect)
+        display.blit(self.p, self.rect)
