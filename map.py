@@ -44,6 +44,7 @@ class  Map:
                 x = x + TAIL_SIZE
             x = 0
             y = y + TAIL_SIZE
+            
     def dref(self, display):
         for f in self.tail:
             f.dref(display)

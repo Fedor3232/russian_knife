@@ -8,7 +8,8 @@ class Sanek:
         self.animate = p.image.load("player_sheet.png")
         self.player = self.noxnici(32, 32, 64, 0)
         self.player = p.transform.scale(self.player, (100, 100))
-        self.rect = self.player.get_rect(center = self.spavn)
+        self.rect = self.player.get_rect(topleft = self.spavn)
+        self.rect_p = self.player.get_rect(topleft = self.spavn)
         self.dd = 0
         self.animates()
         
@@ -17,20 +18,20 @@ class Sanek:
         return ANIMATE
 
     def drew(self, display):
-        display.blit(self.player, self.rect)
+        display.blit(self.player, self.rect_p)
 
     def up(self):
         self.speed_VIS = 0
         self.speed_SHIR = 0
         gg = p.key.get_pressed()
         if gg[p.K_w] == True:
-            self.speed_VIS = -1
+            self.speed_VIS = -5
         if gg[p.K_s] == True:
-            self.speed_VIS = 1
+            self.speed_VIS = 5
         if gg[p.K_a] == True:
-            self.speed_SHIR = -1
+            self.speed_SHIR = -5
         if gg[p.K_d] == True:
-            self.speed_SHIR = 1
+            self.speed_SHIR = 5
         self.rect.x = self.rect.x + self.speed_SHIR
         self.rect.y = self.rect.y + self.speed_VIS
         self.aim()
@@ -90,6 +91,20 @@ class Tile:
         self.nymer = nymer
         self.spavn = spavn
         self.rect = p.Rect(spavn, (TAIL_SIZE,TAIL_SIZE))
+        self.rect_p = p.Rect(spavn, (TAIL_SIZE,TAIL_SIZE))
 
     def dref(self, display):
-        display.blit(self.p, self.rect)
+        display.blit(self.p, self.rect_p)
+
+class DG:
+    def __init__(self, sench):
+        self.sench = sench
+        self.offset = (7345, 6700)
+
+    def up(self):
+        x = -self.sench.rect.x + SHIRINA//2
+        y = -self.sench.rect.y + VISOTA//2
+        self.offset = [x, y]
+    def retyrn(self, tile):
+        tile.rect_p = tile.rect.move(self.offset)
+
