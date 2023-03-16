@@ -1,9 +1,14 @@
 import pygame as p
+p.init()
+import pygame.freetype as pf
+import random as r
+import map
 from satinbs import*
+from sprait import*
 
 class Sanek:
 
-    def __init__(self, spavn):
+    def __init__(self, spavn, bame):
         self.spavn = spavn
         self.animate = p.image.load("player_sheet.png")
         self.player = self.noxnici(32, 32, 64, 0)
@@ -11,6 +16,7 @@ class Sanek:
         self.rect = self.player.get_rect(topleft = self.spavn)
         self.rect_p = self.player.get_rect(topleft = self.spavn)
         self.dd = 0
+        self.game = bame
         self.animates()
         
     def noxnici(self, vis, shir, x, y):
@@ -20,18 +26,26 @@ class Sanek:
     def drew(self, display):
         display.blit(self.player, self.rect_p)
 
+    def kyvalda(self):
+        for gf in self.game.mep.tail:
+            if gf.rect_p.colliderect(self.rect_p) and gf.nymer in WALL_IDS:
+                print("пока")
+
     def up(self):
         self.speed_VIS = 0
         self.speed_SHIR = 0
         gg = p.key.get_pressed()
-        if gg[p.K_w] == True:
+        if gg[UP] == True:
             self.speed_VIS = -5
-        if gg[p.K_s] == True:
+        if gg[DOWN] == True:
             self.speed_VIS = 5
-        if gg[p.K_a] == True:
+        if gg[LEFT] == True:
             self.speed_SHIR = -5
-        if gg[p.K_d] == True:
+        if gg[RIGHT] == True:
             self.speed_SHIR = 5
+
+        self.kyvalda()
+
         self.rect.x = self.rect.x + self.speed_SHIR
         self.rect.y = self.rect.y + self.speed_VIS
         self.aim()
@@ -108,3 +122,37 @@ class DG:
     def retyrn(self, tile):
         tile.rect_p = tile.rect.move(self.offset)
 
+class Game:
+    
+    def __init__(self):
+        self.display = p.display.set_mode((SHIRINA, VISOTA))
+        self.sench = Sanek(SPAVN, self)
+        self.mep = map.Map()
+        self.cemmeran = DG(self.sench)
+        self.w = True
+
+    def event(self):
+        event_list = p.event.get()
+        for event in event_list:
+            if event.type == p.QUIT:
+                self.w = False
+
+    def up(self):
+        for T in self.mep.tail:
+            self.cemmeran.retyrn(T)
+        self.cemmeran.retyrn(self.sench)
+        self.sench.up()
+        self.cemmeran.up()
+        p.display.update()
+        # clok.tick(FPS)
+
+    def dref(self):
+        self.display.fill((0, 0, 0))
+        self.mep.dref(self.display)
+        self.sench.drew(self.display)
+
+    def run(self):
+        while self.w:
+            self.event()
+            self.up()
+            self.dref()
