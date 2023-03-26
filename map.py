@@ -12,6 +12,7 @@ class  Map:
         self.boroholka()
         self.perevodchik()
         self.tail = []
+        self.tail_w = []
         self.g()
 
     def noxnici(self, vis, shir, x, y):
@@ -39,7 +40,9 @@ class  Map:
             for ggf in gf:
                 
                 ff = self.map_png1[int(ggf)]
-                ffg = sprait.Tile((x,y), ggf, ff)
+                ffg = sprait.Tile((x,y), int(ggf), ff)
+                if ffg.nymer in WALL_IDS:
+                    self.tail_w.append(ffg)
                 self.tail.append(ffg)
                 x = x + TAIL_SIZE
             x = 0

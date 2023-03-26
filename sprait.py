@@ -26,11 +26,14 @@ class Sanek:
     def drew(self, display):
         display.blit(self.player, self.rect_p)
 
-    def kyvalda(self):
-        for gf in self.game.mep.tail:
-            if gf.rect_p.colliderect(self.rect_p) and gf.nymer in WALL_IDS:
-                print("пока")
 
+    def kyvalda(self):
+        self.rect_l = p.rect.Rect(self.rect.x + 20, self.rect.y + 20, self.rect.width//3, self.rect.height//3)
+        for gf in self.game.mep.tail_w:
+            if gf.rect.colliderect(self.rect_l) and gf.nymer in WALL_IDS:
+                return True
+        return False
+        
     def up(self):
         self.speed_VIS = 0
         self.speed_SHIR = 0
@@ -44,7 +47,9 @@ class Sanek:
         if gg[RIGHT] == True:
             self.speed_SHIR = 5
 
-        self.kyvalda()
+        if self.kyvalda() == True:
+            self.speed_VIS = 0
+            self.speed_SHIR = 0
 
         self.rect.x = self.rect.x + self.speed_SHIR
         self.rect.y = self.rect.y + self.speed_VIS
