@@ -1,10 +1,11 @@
 import pygame as p
-p.init()
 import pygame.freetype as pf
 import random as r
 import map
 from satinbs import*
 from sprait import*
+import hhj
+p.init()
 
 class Sanek:
 
@@ -28,9 +29,13 @@ class Sanek:
 
 
     def kyvalda(self):
-        self.rect_l = p.rect.Rect(self.rect.x + 20, self.rect.y + 20, self.rect.width//3, self.rect.height//3)
+        self.rect_l = p.rect.Rect(self.rect.x + 40, self.rect.y + 40, self.rect.width//6, self.rect.height//6)
+        delorian = p.rect.Rect(self.rect.x, self.rect.y, self.rect.width, self.rect.height)
+        delorian.y = delorian.y + self.speed_VIS
+        delorian.y = delorian.y + self.speed_SHIR
+
         for gf in self.game.mep.tail_w:
-            if gf.rect.colliderect(self.rect_l) and gf.nymer in WALL_IDS:
+            if gf.rect.colliderect(delorian) and gf.nymer in WALL_IDS:
                 return True
         return False
         
@@ -134,13 +139,20 @@ class Game:
         self.sench = Sanek(SPAVN, self)
         self.mep = map.Map()
         self.cemmeran = DG(self.sench)
-        self.w = True
+        self.name = NAME
+        self.txt = pf.Font("kenvector_future_thin.ttf", 15)
+        self.fps = 0
+        self.clok = p.time.Clock()
 
     def event(self):
         event_list = p.event.get()
         for event in event_list:
             if event.type == p.QUIT:
-                self.w = False
+                W = False
+            if event.type == p.KEYDOWN:
+                if event.key == p.K_f:
+                    hhj.seev(NAME, self.sench.rect.x, self.sench.rect.y)
+
 
     def up(self):
         for T in self.mep.tail:
@@ -149,15 +161,18 @@ class Game:
         self.sench.up()
         self.cemmeran.up()
         p.display.update()
-        # clok.tick(FPS)
+        self.clok.tick(FPS)
+        self.fps = self.clok.get_fps()
 
     def dref(self):
         self.display.fill((0, 0, 0))
         self.mep.dref(self.display)
         self.sench.drew(self.display)
+        self.txt.render_to(self.display,(20, 20) ,self.name)
+        self.txt.render_to(self.display,(20, 40) ,F"FPS: {int(self.fps)}" )
 
     def run(self):
-        while self.w:
+        while W:
             self.event()
             self.up()
             self.dref()

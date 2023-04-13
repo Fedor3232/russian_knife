@@ -1,6 +1,7 @@
-import meny
+import meny 
 import screeninfo as s
 import pygame as p
+import hhj
 dd = s.get_monitors()
 w = dd[0]
 
@@ -8,9 +9,11 @@ SHIRINA = w.width * float(meny.z_reed["skreen_size"])
 VISOTA = w.height * float(meny.z_reed["skreen_size"])
 FPS = 100
 TAIL_SIZE = int(meny.z_reed["size"])
-SPAVN = [7345, 6700]
+NAME = meny.z_reed["name"]
+SPAVN = hhj.spavner(NAME)
 if TAIL_SIZE == 32:
-    SPAVN = [7345//2, 6700//2]
+    SPAVN = [SPAVN[0]//2, SPAVN[1]//2]
+# SPAVN = [0, 0]
 
 if meny.z_reed["wasd"] == True:
     UP = p.K_w
@@ -23,6 +26,11 @@ else:
     LEFT = p.K_LEFT
     RIGHT = p.K_RIGHT
 
+if meny.s_reed == "start":
+    W = True
+    G = False
+elif meny.s_reed == "bye":
+    W = False
 
 WALL_IDS = [1, 2, 3, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
             18, 19, 20, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,

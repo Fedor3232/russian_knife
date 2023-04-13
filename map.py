@@ -31,6 +31,7 @@ class  Map:
     def perevodchik(self):
         self.hp = []
         gg = open("levle1..csv")
+        # map.csv
         self.hp = list(csv.reader(gg))
 
     def g(self):
