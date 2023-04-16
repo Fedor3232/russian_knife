@@ -4,7 +4,7 @@ import pygame.freetype
 pygame.init()
 screen = p.display.set_mode((544, 256))
 
-font = pygame.freetype.Font(None, 20)
+font = pygame.freetype.Font(None, 15)
 image = p.image.load('rpg_tileset.png')
 image = p.transform.scale(image, (544, 256))
 

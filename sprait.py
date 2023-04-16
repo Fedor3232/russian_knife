@@ -30,9 +30,9 @@ class Sanek:
 
     def kyvalda(self):
         self.rect_l = p.rect.Rect(self.rect.x + 40, self.rect.y + 40, self.rect.width//6, self.rect.height//6)
-        delorian = p.rect.Rect(self.rect.x, self.rect.y, self.rect.width, self.rect.height)
+        delorian = p.rect.Rect(self.rect_l.x, self.rect_l.y, self.rect_l.width, self.rect_l.height)
         delorian.y = delorian.y + self.speed_VIS
-        delorian.y = delorian.y + self.speed_SHIR
+        delorian.x = delorian.x + self.speed_SHIR
 
         for gf in self.game.mep.tail_w:
             if gf.rect.colliderect(delorian) and gf.nymer in WALL_IDS:
@@ -139,16 +139,18 @@ class Game:
         self.sench = Sanek(SPAVN, self)
         self.mep = map.Map()
         self.cemmeran = DG(self.sench)
+        self.npc = NPC(self.mep.map_png1[119], SPAVN)
         self.name = NAME
         self.txt = pf.Font("kenvector_future_thin.ttf", 15)
         self.fps = 0
         self.clok = p.time.Clock()
-
+        self.W = W
+# (TAIL_SIZE * 112, TAIL_SIZE * 107)
     def event(self):
         event_list = p.event.get()
         for event in event_list:
             if event.type == p.QUIT:
-                W = False
+                self.W = False
             if event.type == p.KEYDOWN:
                 if event.key == p.K_f:
                     hhj.seev(NAME, self.sench.rect.x, self.sench.rect.y)
@@ -170,9 +172,18 @@ class Game:
         self.sench.drew(self.display)
         self.txt.render_to(self.display,(20, 20) ,self.name)
         self.txt.render_to(self.display,(20, 40) ,F"FPS: {int(self.fps)}" )
+        self.npc.dref(self.display)
 
     def run(self):
-        while W:
+        while self.W:
             self.event()
             self.up()
             self.dref()
+
+class NPC:
+    def __init__(self, merch, spavn):
+        self.m = merch
+        self.r = p.rect.Rect(spavn, (TAIL_SIZE, TAIL_SIZE))
+        
+    def dref(self, display):
+        display.blit(self.m, self.r)
